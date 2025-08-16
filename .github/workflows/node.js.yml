@@ -17,10 +17,6 @@ jobs:
       with:
         node-version: '20'
     
-    - name: Install and build
-      run: |
-        npm ci
-        npm run build
     
     - name: Copy files to EC2
       uses: appleboy/scp-action@v0.1.7
@@ -29,6 +25,12 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          ./node.sh
+          cd /home/ubuntu/node
+          git checkout main
+          git pull origin main
+          npm install
+          npm run build
+          npm start
+          
           
     
